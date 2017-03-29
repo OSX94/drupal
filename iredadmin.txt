@@ -1,0 +1,144 @@
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `deleted_mailboxes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `deleted_mailboxes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `username` varchar(255) NOT NULL DEFAULT '',
+  `domain` varchar(255) NOT NULL DEFAULT '',
+  `maildir` varchar(255) NOT NULL DEFAULT '',
+  `admin` varchar(255) NOT NULL DEFAULT '',
+  `delete_date` date DEFAULT NULL,
+  KEY `id` (`id`),
+  KEY `timestamp` (`timestamp`),
+  KEY `username` (`username`),
+  KEY `domain` (`domain`),
+  KEY `admin` (`admin`),
+  KEY `delete_date` (`delete_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `deleted_mailboxes` WRITE;
+/*!40000 ALTER TABLE `deleted_mailboxes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `deleted_mailboxes` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `domain_ownership`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `domain_ownership` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `admin` varchar(255) NOT NULL DEFAULT '',
+  `domain` varchar(255) NOT NULL DEFAULT '',
+  `alias_domain` varchar(255) NOT NULL DEFAULT '',
+  `verify_code` varchar(100) NOT NULL DEFAULT '',
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `message` text,
+  `last_verify` timestamp NULL DEFAULT NULL,
+  `expire` int(10) unsigned DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `admin` (`admin`,`domain`,`alias_domain`),
+  KEY `verified` (`verified`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `domain_ownership` WRITE;
+/*!40000 ALTER TABLE `domain_ownership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `domain_ownership` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `log` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `admin` varchar(255) NOT NULL,
+  `ip` varchar(40) NOT NULL,
+  `domain` varchar(255) NOT NULL DEFAULT '',
+  `username` varchar(255) NOT NULL DEFAULT '',
+  `event` varchar(20) NOT NULL DEFAULT '',
+  `loglevel` varchar(10) NOT NULL DEFAULT 'info',
+  `msg` varchar(255) NOT NULL,
+  KEY `id` (`id`),
+  KEY `timestamp` (`timestamp`),
+  KEY `admin` (`admin`),
+  KEY `ip` (`ip`),
+  KEY `domain` (`domain`),
+  KEY `username` (`username`),
+  KEY `event` (`event`),
+  KEY `loglevel` (`loglevel`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `log` WRITE;
+/*!40000 ALTER TABLE `log` DISABLE KEYS */;
+INSERT INTO `log` VALUES (1,'2017-03-29 03:22:41','postmaster@pangea.local','10.0.100.4','','','login','error','Login failed.'),(2,'2017-03-29 03:22:48','postmaster@pangea.local','10.0.100.4','','','login','error','Login failed.'),(3,'2017-03-29 03:23:28','postmaster@pangea.local','10.0.100.4','','','login','error','Login failed.'),(4,'2017-03-29 03:23:33','postmaster@pangea.local','10.0.100.4','','','login','error','Login failed.'),(5,'2017-03-29 03:23:39','postmaster@pangea.local','10.0.100.4','','','login','info','Login success'),(6,'2017-03-29 03:23:59','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: user1@pangea.local.'),(7,'2017-03-29 03:39:59','postmaster@pangea.local','10.0.100.4','','','delete','info','Delete user: user1@pangea.local.'),(8,'2017-03-29 03:39:59','postmaster@pangea.local','10.0.100.4','pangea.local','','delete','info','Delete user: user1@pangea.local.'),(9,'2017-03-29 03:41:21','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: l.delrose@pangea.local.'),(10,'2017-03-29 03:42:03','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: f.castle@pangea.local.'),(11,'2017-03-29 03:42:30','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: c.wheeler@pangea.local.'),(12,'2017-03-29 03:42:59','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: p.emerson@pangea.local.'),(13,'2017-03-29 03:43:27','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: b.wells@pangea.local.'),(14,'2017-03-29 03:43:59','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: s.taylor@pangea.local.'),(15,'2017-03-29 03:44:28','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: h.peterson@pangea.local.'),(16,'2017-03-29 03:44:57','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: a.thompson@pangea.local.'),(17,'2017-03-29 03:45:52','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: j.wright@pangea.local.'),(18,'2017-03-29 03:46:20','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: t.fritz@pangea.local.'),(19,'2017-03-29 03:46:55','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: c.licht@pangea.local.'),(20,'2017-03-29 03:47:18','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: p.luther@pangea.local.'),(21,'2017-03-29 03:47:48','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: s.wilhelm@pangea.local.'),(22,'2017-03-29 03:48:22','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: k.holmes@pangea.local.'),(23,'2017-03-29 03:48:46','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: s.smith@pangea.local.'),(24,'2017-03-29 03:49:12','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: j.hoyt@pangea.local.'),(25,'2017-03-29 03:55:31','postmaster@pangea.local','10.0.100.4','','','login','error','Login failed.'),(26,'2017-03-29 03:55:36','postmaster@pangea.local','10.0.100.4','','','login','info','Login success'),(27,'2017-03-29 03:56:06','postmaster@pangea.local','10.0.100.4','pangea.local','','create','info','Create user: support@pangea.local.'),(28,'2017-03-29 04:36:55','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(29,'2017-03-29 04:37:00','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(30,'2017-03-29 04:37:09','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(31,'2017-03-29 04:37:14','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(32,'2017-03-29 04:37:24','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(33,'2017-03-29 04:37:29','postmaster@pangea.local','10.0.100.6','','','login','error','Login failed.'),(34,'2017-03-29 04:37:34','postmaster@pangea.local','10.0.100.6','','','login','info','Login success'),(35,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: vmail, size: 8.0K (original: 32K)'),(36,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: iredadmin, size: 4.0K (original: 12K)'),(37,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: mysql, size: 100K (original: 516K)'),(38,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: mysql, size: 100K (original: 516K)'),(39,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: amavisd, size: 4.0K (original: 12K)'),(40,'2017-03-29 04:52:02','cron_backup_sql','127.0.0.1','','','backup','info','Database: iredapd, size: 8.0K (original: 44K)'),(41,'2017-03-29 04:52:03','cron_backup_sql','127.0.0.1','','','backup','info','Database: roundcubemail, size: 4.0K (original: 16K)');
+/*!40000 ALTER TABLE `log` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sessions` (
+  `session_id` char(128) NOT NULL,
+  `atime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `data` text,
+  UNIQUE KEY `session_id` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('99bb33c219d9f1fc25c9eb621fea417a50f0182e','2017-03-28 23:37:49','KGRwMQpTJ3VzZXJuYW1lJwpwMgpOc1MnbGFuZycKcDMKUydlbl9VUycKcDQKc1Mnc3RvcmVfcGFz\nc3dvcmRfaW5fcGxhaW5fdGV4dCcKcDUKSTAwCnNTJ2lwJwpwNgpWMTAuMC4xMDAuNgpwNwpzUyds\nb2dnZWQnCnA4CkkwMApzUydhbWF2aXNkX2VuYWJsZV9xdWFyYW50aW5lJwpwOQpJMDEKc1Mnc2Vz\nc2lvbl9pZCcKcDEwClMnOTliYjMzYzIxOWQ5ZjFmYzI1YzllYjYyMWZlYTQxN2E1MGYwMTgyZScK\ncDExCnNTJ2RlZmF1bHRfbXRhX3RyYW5zcG9ydCcKcDEyClMnZG92ZWNvdCcKcDEzCnNTJ2ZhaWxl\nZF90aW1lcycKcDE0CkkwCnNTJ2lzX2dsb2JhbF9hZG1pbicKcDE1CkkwMApzUyd3ZWJtYXN0ZXIn\nCnAxNgpTJ3Bvc3RtYXN0ZXJAcGFuZ2VhLmxvY2FsJwpwMTcKcy4=\n');
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `tracking`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tracking` (
+  `k` varchar(255) NOT NULL,
+  `v` text,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `k` (`k`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `tracking` WRITE;
+/*!40000 ALTER TABLE `tracking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tracking` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `updatelog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `updatelog` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
+  KEY `id` (`id`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `updatelog` WRITE;
+/*!40000 ALTER TABLE `updatelog` DISABLE KEYS */;
+INSERT INTO `updatelog` VALUES (1,'2017-03-28');
+/*!40000 ALTER TABLE `updatelog` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
